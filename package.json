@@ -1,0 +1,39 @@
+{
+  "name": "crochetproject",
+  "version": "1.0.0",
+  "description": "web-based",
+  "keywords": [
+    "crochet",
+    "web"
+  ],
+  "homepage": "https://github.com/ppbora/crochetProject#readme",
+  "bugs": {
+    "url": "https://github.com/ppbora/crochetProject/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ppbora/crochetProject.git"
+  },
+  "license": "ISC",
+  "author": "earnne",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/index.ts",
+    "start": "tsc && node ./build/js/index.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.5.0",
+    "nodemon": "^3.1.14"
+  }
+}
