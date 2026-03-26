@@ -17,12 +17,18 @@
 
     // Other Outputs
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    //"declaration": true,
+    //"declarationMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
+    "noEmitOnError": true,
+    "allowImportingTsExtensions":true,
+
+    "noEmit": true,
 
     // Style Options
     // "noImplicitReturns": true,
