@@ -15,10 +15,21 @@ if (!mongoDB) {
     throw new Error (`Error: Please specify the MongoDB URL`)
 }
 
+export const accessSecretKey = process.env.ACCESS_SECRET_KEY
+if (!accessSecretKey) {
+    throw new Error (`Error: Please specify the Secret Key`)
+}
+
+export const refreshSecretKey = process.env.REFRESH_SECRET_KEY
+if (!refreshSecretKey) {
+    throw new Error (`Error: Please specify the Secret Key`)
+}
 //constants .env
 const env = {
     PORT: parseInt(port, 10),
-    MONGO_DB: mongoDB
+    MONGO_DB: mongoDB,
+    ACCESS_SECRET_KEY: accessSecretKey,
+    REFRESH_SECRET_KEY: refreshSecretKey    
 };
 
 export default env;
