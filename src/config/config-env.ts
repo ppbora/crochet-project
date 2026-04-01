@@ -24,12 +24,18 @@ export const refreshSecretKey = process.env.REFRESH_SECRET_KEY
 if (!refreshSecretKey) {
     throw new Error (`Error: Please specify the Secret Key`)
 }
+
+export const discordClientSecret = process.env.DISCORD_CLIENT_SECRET
+if (!discordClientSecret) {
+    throw new Error (`Error: Please specify the Dicord Client Secret`)
+}
 //constants .env
 const env = {
     PORT: parseInt(port, 10),
     MONGO_DB: mongoDB,
     ACCESS_SECRET_KEY: accessSecretKey,
-    REFRESH_SECRET_KEY: refreshSecretKey    
+    REFRESH_SECRET_KEY: refreshSecretKey,
+    DISCORD_CLIENT_SECRET: discordClientSecret    
 };
 
 export default env;

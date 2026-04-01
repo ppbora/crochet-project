@@ -1,9 +1,8 @@
-import type { Response,NextFunction } from "express";
+import type { Request, Response,NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import env from "../config/config-env.ts";
-import type {AuthRequest} from "../types/user.ts"
 
-export const authenticateToken = (req:AuthRequest, res:Response, next:NextFunction) => {
+export const authenticateToken = (req:Request, res:Response, next:NextFunction) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];  // Bearer <token>
 
