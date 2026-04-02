@@ -29,13 +29,19 @@ export const discordClientSecret = process.env.DISCORD_CLIENT_SECRET
 if (!discordClientSecret) {
     throw new Error (`Error: Please specify the Dicord Client Secret`)
 }
+
+export const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
+if (!googleClientSecret) {
+    throw new Error (`Error: Please specify the Dicord Client Secret`)
+}
 //constants .env
 const env = {
     PORT: parseInt(port, 10),
     MONGO_DB: mongoDB,
     ACCESS_SECRET_KEY: accessSecretKey,
     REFRESH_SECRET_KEY: refreshSecretKey,
-    DISCORD_CLIENT_SECRET: discordClientSecret    
+    DISCORD_CLIENT_SECRET: discordClientSecret,
+    GOOGLE_CLIENT_SECRET: googleClientSecret
 };
 
 export default env;

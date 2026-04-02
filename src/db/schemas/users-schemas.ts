@@ -4,14 +4,21 @@ import {prop, getModelForClass} from "@typegoose/typegoose";
 class Users{
     @prop({type: () => String})
     public name?:string; //both valus or undefined
-    @prop({required:true, unique: true,type: () => String})
-    public username!: string //need to have a value
+    @prop({type: () => String})
+    public username?: string 
     @prop({type: () => String})
     public password?: string
     @prop({type: () => String})
     public gender?: string
     @prop({type: () => String})
+    public email?: string;
+    @prop({type: () => String})
     public refreshToken?: string;
+
+    @prop({type: () => String})
+    public discordId?: string;
+    @prop({type: () => String})
+    public googleId?: string;
 }
 
 const UserModel = getModelForClass(Users);

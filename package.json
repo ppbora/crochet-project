@@ -38,6 +38,7 @@
     "mongoose": "^9.2.4",
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",
+    "passport-google-oauth20": "^2.0.0",
     "reflect-metadata": "^0.2.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
@@ -52,6 +53,7 @@
     "@types/node": "^25.5.0",
     "@types/passport": "^1.0.17",
     "@types/passport-discord": "^0.1.15",
+    "@types/passport-google-oauth20": "^2.0.17",
     "nodemon": "^3.1.14"
   }
 }
