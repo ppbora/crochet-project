@@ -7,8 +7,7 @@ export const authenticateToken = (req:Request, res:Response, next:NextFunction) 
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];  // Bearer <token>
     if (!token) {
-        res.send({ error: "Access Denied. No token provided." });
-        return res.redirect('/api/auth/login');  
+        return res.status(401).send({ error: "Access Denied. No token provided." });
     }
     jwt.verify(token, env.ACCESS_SECRET_KEY, (err, decoded) => {
         const payload = decoded as MyTokenPayload;
