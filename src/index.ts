@@ -4,17 +4,23 @@ import connectToDatabase from "./db/mongo-connection.ts";
 import authRoutes from "./routes/auth-routes.ts"
 import env from "./config/config-env.ts";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 import session from "express-session";
 import passport from "passport";
 import {serializeUser, deserializeUser} from "./strategies/serialization.ts"
+import compression from "compression";
 
 const app = express();
 
 //DB and PORT
 connectToDatabase();
 
+app.use(cors({
+  credentials: true
+}));
+app.use(compression);
+app.use(cookieParser());
 app.use(express.json());
-app.use(cookieParser())
 app.use(session({
     secret: env.ACCESS_SECRET_KEY,
     resave: false,
@@ -38,5 +44,5 @@ app.get("/", (req, res) => {
 app.use(authRoutes);
 
 app.listen(env.PORT, ()=> {
-  console.log(`Server is running on ${env.PORT}`)
+  console.log(`Server is running on ${env.PORT}`) 
 })

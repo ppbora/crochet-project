@@ -1,13 +1,11 @@
-import UserModel from "./schemas/users-schemas.ts";
+import UserModel,{getUserByUsername,createUser,} from "./schemas/users-schemas.ts";
 
  export const saveUserLocal = async(name:string, username:string, password:string, gender:string)=>{
     try{
-        const findUser = await UserModel.findOne({username: username});
+        const findUser = await getUserByUsername;
         
         if(!findUser) {
-            const newUser = new UserModel({name, username,password,gender,login:"local"});
-            const savedUser = await newUser.save();
-            return savedUser;
+            return createUser({name, username,password,gender,login:"local"});
         } else {
             throw new Error("Username is not available");
         }

@@ -12,7 +12,7 @@ class Users{
     public gender?: string
     @prop({type: () => String})
     public email?: string;
-    @prop({type: () => String})
+    @prop({type: () => String, select: false})
     public refreshToken?: string;
 
     @prop({type: () => String})
@@ -27,3 +27,11 @@ class Users{
 const UserModel = getModelForClass(Users);
 
 export default UserModel;
+
+export const getUserByAccessToken = (accessToken:string)=> UserModel.findOne({
+    'authentication.accessToken': accessToken,
+})
+export const getUserById = (id:string)=> UserModel.findById(id)
+export const getUserByUsername = (username:string)=>UserModel.findOne({username: username})
+export const createUser = (values: Record<string,any>)=> new UserModel(values)
+    .save().then((user)=>user.toObject())
