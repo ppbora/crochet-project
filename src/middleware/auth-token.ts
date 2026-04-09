@@ -12,10 +12,8 @@ export const authenticateToken = (req:Request, res:Response, next:NextFunction) 
     jwt.verify(token, env.ACCESS_SECRET_KEY, (err, decoded) => {
         const payload = decoded as MyTokenPayload;
 
-        if (err || !decoded) return res.redirect('/api/auth/login');  
-        if (req.user == undefined || req.user.id == undefined) {
-            return res.status(401).send({ error: "User not authenticated" });
-        }
+        if (err || !decoded) 
+            return res.status(401).send({ error: "Invalid or expired token." });
         req.user = {
             id: payload.id,
             username: payload.username

@@ -1,9 +1,8 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import UserModel from "../db/schemas/users-schemas.ts";
 import jwt from "jsonwebtoken";
 import env from "../config/config-env.ts";
 import bcrypt from "bcrypt";
-import {get} from "lodash"
 import { hashPassword } from "../utils/hash-password.ts";
 import { saveUserLocal } from "../db/users.ts";
 
@@ -51,24 +50,33 @@ export const register = async (req:Request,res:Response)=> {
     const hashedPassword = await hashPassword(password)
 
     // saved to DB
-    saveUserLocal(name, username, hashedPassword, gender)
+    try {
+        await saveUserLocal(name, username, hashedPassword, gender);
+    } catch (err) {
+        return res.status(500).send({ error: "Please check"});
+    }
 
     res.status(201).send(`${username} has been registered`)
 }
 
-export const isOwner = async (req:Request, res:Response) =>{
+export const getUser = async (req:Request,res:Response) =>{
     try{
         const {id} = req.params;
-        const currentUserId = get(req, 'identity._id');
+        const currentUserId = req?.user?.id ?? "Unknown User";;
         if(!currentUserId) 
             return res.sendStatus(403)
-        if(currentUserId!==id)
+        if(currentUserId.toString!==id?.toString)
             return res.sendStatus(400)
+        const user = await UserModel.findById(req.params.id)
+            .select("username name gender -_id");
+        if (!user) {
+            return res.status(404).send({ error: "User not found" });
+        }
+        res.status(200).send(user)
     }catch(err){
         console.log(err)
         res.sendStatus(400)
     }
-
 }
 
  export const refreshToken = async (req:Request,res:Response)=>{

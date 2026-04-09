@@ -10,30 +10,36 @@ if (!port) {
 
 
 //MONGODB
-export const mongoDB = process.env.MONGO_DB
+const mongoDB = process.env.MONGO_DB
 if (!mongoDB) {
     throw new Error (`Error: Please specify the MongoDB URL`)
 }
 
-export const accessSecretKey = process.env.ACCESS_SECRET_KEY
+const accessSecretKey = process.env.ACCESS_SECRET_KEY
 if (!accessSecretKey) {
     throw new Error (`Error: Please specify the Secret Key`)
 }
 
-export const refreshSecretKey = process.env.REFRESH_SECRET_KEY
+const refreshSecretKey = process.env.REFRESH_SECRET_KEY
 if (!refreshSecretKey) {
     throw new Error (`Error: Please specify the Secret Key`)
 }
 
-export const discordClientSecret = process.env.DISCORD_CLIENT_SECRET
+const discordClientSecret = process.env.DISCORD_CLIENT_SECRET
 if (!discordClientSecret) {
-    throw new Error (`Error: Please specify the Dicord Client Secret`)
+    throw new Error (`Error: Please specify the Discord Client Secret`)
 }
 
-export const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
 if (!googleClientSecret) {
-    throw new Error (`Error: Please specify the Dicord Client Secret`)
+    throw new Error (`Error: Please specify the Google Client Secret`)
 }
+
+const sessionSecret = process.env.SESSION_SECRET
+if (!sessionSecret) {
+    throw new Error (`Error: Please specify the Session Secret`)
+}
+
 //constants .env
 const env = {
     PORT: parseInt(port, 10),
@@ -41,7 +47,8 @@ const env = {
     ACCESS_SECRET_KEY: accessSecretKey,
     REFRESH_SECRET_KEY: refreshSecretKey,
     DISCORD_CLIENT_SECRET: discordClientSecret,
-    GOOGLE_CLIENT_SECRET: googleClientSecret
+    GOOGLE_CLIENT_SECRET: googleClientSecret,
+    SESSION_SECRET: sessionSecret,
 };
 
 export default env;

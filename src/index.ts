@@ -16,13 +16,14 @@ const app = express();
 connectToDatabase();
 
 app.use(cors({
+  origin: "http://localhost:3000",
   credentials: true
 }));
-app.use(compression);
+app.use(compression());
 app.use(cookieParser());
 app.use(express.json());
 app.use(session({
-    secret: env.ACCESS_SECRET_KEY,
+    secret: env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {

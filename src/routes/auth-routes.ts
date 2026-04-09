@@ -6,14 +6,15 @@ import { checkSchema } from "express-validator";
 import passport from "passport";
 
 import { loginSchema, regisSchema } from "../utils/validation-schemas.ts";
-import { login, register,refreshToken,redirectOAUTH2,logout, isOwner } from '../services/auth-service.ts'; 
+import { login, register,refreshToken,redirectOAUTH2,logout, getUser } from '../services/auth-service.ts'; 
 import errorCheckerMiddleware from "../middleware/error-handler.ts";
+import { authenticateToken } from '../middleware/auth-token.ts';
 
 const router=Router();
 
-router.post("/api/auth/login", checkSchema(regisSchema), errorCheckerMiddleware, login);
-router.post("/api/auth/register", checkSchema(loginSchema),errorCheckerMiddleware, register);
-router.get("/api/user/:id", isOwner);
+router.post("/api/auth/login", checkSchema(loginSchema), errorCheckerMiddleware, login);
+router.post("/api/auth/register", checkSchema(regisSchema),errorCheckerMiddleware, register);
+router.get("/api/user/:id", authenticateToken, getUser);
 
 router.get('/api/auth/discord', passport.authenticate("discord"));
 router.get('/api/auth/discord/redirect', passport.authenticate("discord", {failureRedirect: '/api/auth/login'}), redirectOAUTH2);

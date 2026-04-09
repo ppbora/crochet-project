@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import express from 'express'
 import env from '../config/config-env.ts';
 
 async function connectToDatabase(){
