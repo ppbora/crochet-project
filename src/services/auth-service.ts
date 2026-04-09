@@ -3,8 +3,7 @@ import UserModel from "../db/schemas/users-schemas.ts";
 import jwt from "jsonwebtoken";
 import env from "../config/config-env.ts";
 import bcrypt from "bcrypt";
-import type { Profile } from "passport";
-import type OAuth2Strategy from "passport-oauth2";
+import {get} from "lodash"
 import { hashPassword } from "../utils/hash-password.ts";
 import { saveUserLocal } from "../db/users.ts";
 
@@ -14,7 +13,7 @@ const REFRESH_SECRET_KEY=env.REFRESH_SECRET_KEY
 
 export const login = async (req: Request, res: Response ) =>{
     const { username, password } = req.body;
-    const findUser = await UserModel.findOne({username});
+    const findUser = await UserModel.findOne({username}).select("+password"); // select to display password
 
     if(!findUser || !findUser.password) return res.status(401).send({error: "Invalid username or password"});
     const matchPassword = await bcrypt.compare(password, findUser.password);
@@ -55,6 +54,21 @@ export const register = async (req:Request,res:Response)=> {
     saveUserLocal(name, username, hashedPassword, gender)
 
     res.status(201).send(`${username} has been registered`)
+}
+
+export const isOwner = async (req:Request, res:Response) =>{
+    try{
+        const {id} = req.params;
+        const currentUserId = get(req, 'identity._id');
+        if(!currentUserId) 
+            return res.sendStatus(403)
+        if(currentUserId!==id)
+            return res.sendStatus(400)
+    }catch(err){
+        console.log(err)
+        res.sendStatus(400)
+    }
+
 }
 
  export const refreshToken = async (req:Request,res:Response)=>{
