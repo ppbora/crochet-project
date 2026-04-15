@@ -33,12 +33,6 @@ export const login = async (req: Request, res: Response) => {
       maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
     });
 
-    res.cookie("authToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 30 * 60 * 1000, //30 mins
-    });
-
     return res.status(200).send({
       message: "Login successful!",
       accessToken: accessToken,
