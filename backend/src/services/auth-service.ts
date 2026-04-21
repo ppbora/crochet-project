@@ -18,12 +18,20 @@ export const login = async (req: Request, res: Response) => {
   const matchPassword = await bcrypt.compare(password, findUser.password);
 
   if (matchPassword) {
-    const accessToken = jwt.sign({ username }, ACCESS_SECRET_KEY, {
-      expiresIn: "30m",
-    });
-    const refreshToken = jwt.sign({ username }, REFRESH_SECRET_KEY, {
-      expiresIn: "30d",
-    });
+    const accessToken = jwt.sign(
+      { id: findUser._id, username: findUser.username },
+      ACCESS_SECRET_KEY,
+      {
+        expiresIn: "30m",
+      },
+    );
+    const refreshToken = jwt.sign(
+      { id: findUser._id, username: findUser.username },
+      REFRESH_SECRET_KEY,
+      {
+        expiresIn: "30d",
+      },
+    );
     findUser.refreshToken = refreshToken;
     await findUser.save();
 
@@ -63,25 +71,22 @@ export const register = async (req: Request, res: Response) => {
   res.status(201).send(`${username} has been registered`);
 };
 
-export const getUser = async (req: Request, res: Response) => {
+export const getMe = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const currentUserId = req?.user?.id ?? "Unknown User";
-    if (!currentUserId) return res.sendStatus(403);
-    if (currentUserId.toString !== id?.toString) return res.sendStatus(400);
-    const user = await UserModel.findById(req.params.id).select(
+    const currentUserId = req?.user?.id;
+    if (!currentUserId) return res.sendStatus(401);
+
+    const user = await UserModel.findById(currentUserId).select(
       "username name gender -_id",
     );
-    if (!user) {
-      return res.status(404).send({ error: "User not found" });
-    }
-    res.status(200).send(user);
+    if (!user) return res.status(404).send({ error: "User not found" });
+
+    res.status(200).send({ user });
   } catch (err) {
     console.log(err);
     res.sendStatus(400);
   }
 };
-
 export const refreshToken = async (req: Request, res: Response) => {
   try {
     const currentRefreshToken = req.cookies?.refreshToken;

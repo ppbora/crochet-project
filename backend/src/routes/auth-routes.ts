@@ -12,7 +12,7 @@ import {
   refreshToken,
   redirectOAUTH2,
   logout,
-  getUser,
+  getMe,
 } from "../services/auth-service.ts";
 import errorCheckerMiddleware from "../middleware/error-handler.ts";
 import { authenticateToken } from "../middleware/auth-token.ts";
@@ -31,7 +31,7 @@ router.post(
   errorCheckerMiddleware,
   register,
 );
-router.get("/api/user/me", authenticateToken, getUser);
+router.get("/api/users/me", authenticateToken, getMe);
 
 router.get("/api/auth/discord", passport.authenticate("discord"));
 router.get(
