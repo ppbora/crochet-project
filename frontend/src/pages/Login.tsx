@@ -15,8 +15,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  // ✅ call at top level, not inside handleSubmit
   const { setUser, setToken } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
