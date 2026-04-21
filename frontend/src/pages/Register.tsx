@@ -25,7 +25,7 @@ const Register = () => {
     if (!password) newErrors.push("Please enter a password.");
 
     const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,32}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,32}$/;
     if (password && !passwordRegex.test(password)) {
       newErrors.push(
         "Password must be 8-32 chars and include 1 letter, 1 number, and 1 special character.",
@@ -35,10 +35,11 @@ const Register = () => {
       newErrors.push("Passwords do not match.");
     }
 
-    if (!gender || (gender !== "male" && gender !== "female")) {
-      newErrors.push("Please select male or female.");
+    const verifyGender = gender == "male" || gender == "female";
+    if (!verifyGender) {
+      newErrors.push("Please enter male or female");
+      return;
     }
-
     if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
@@ -46,25 +47,17 @@ const Register = () => {
 
     setErrors([]);
 
-    const verifyGender = gender == "male" || gender == "female";
-    if (!verifyGender) {
-      newErrors.push("Please enter male or female");
-      return;
-    }
     setLoading(true);
 
     try {
       await axios.post(
         "http://localhost:8080/api/auth/register",
-        { username, password },
+        { username, name, password, gender },
         { withCredentials: true },
       );
       navigate("/login");
     } catch (error: any) {
-      setErrors(
-        error.response?.data?.message ||
-          "Registration failed. Please try again.",
-      );
+      setErrors([error.response?.data?.message || "Registration failed..."]);
     } finally {
       setLoading(false);
     }
@@ -75,7 +68,15 @@ const Register = () => {
         <h2 className="block text-gray-600 text-center font-bold  ">
           Registration
         </h2>
-        {error && <p className="text-red-500 mb-4 text-sm">{error}</p>}
+        {error.length > 0 && (
+          <ul className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            {error.map((err, i) => (
+              <li key={i} className="text-red-500 text-sm">
+                • {err}
+              </li>
+            ))}
+          </ul>
+        )}{" "}
         <form className="flex flex-col justify-around " onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-600 text-sm font-medium mb-1">
@@ -146,7 +147,7 @@ const Register = () => {
                 className="w-full p-3 border border-gray-300 rounded-md
               focus:ring-2 focus:ring-blue-200 outline-none
               focus:border-blue-400"
-                type={showConfirmPassword ? "text" : "confirmPassword"}
+                type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
@@ -159,7 +160,7 @@ const Register = () => {
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
             <div className="mt-4 mb-4">
@@ -170,6 +171,7 @@ const Register = () => {
                 className="w-full p-3 text-gray-500 border border-gray-300 rounded-md
               focus:ring-2 focus:ring-blue-200 outline-none
               focus:border-blue-400"
+                name="gender"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
                 required
