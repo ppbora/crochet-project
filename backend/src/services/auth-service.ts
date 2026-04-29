@@ -19,14 +19,14 @@ export const login = async (req: Request, res: Response) => {
 
   if (matchPassword) {
     const accessToken = jwt.sign(
-      { id: findUser._id, username: findUser.username },
+      { id: findUser._id.toString(), username: findUser.username },
       ACCESS_SECRET_KEY,
       {
         expiresIn: "30m",
       },
     );
     const refreshToken = jwt.sign(
-      { id: findUser._id, username: findUser.username },
+      { id: findUser._id.toString(), username: findUser.username },
       REFRESH_SECRET_KEY,
       {
         expiresIn: "30d",
@@ -97,6 +97,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     const decoded = jwt.verify(currentRefreshToken, REFRESH_SECRET_KEY) as {
       username: string;
+      id: string;
     };
     const findUser = await UserModel.findOne({
       username: decoded.username,
@@ -108,12 +109,12 @@ export const refreshToken = async (req: Request, res: Response) => {
     if (!findUser)
       return res.status(403).send({ Error: "Invalid refresh token" });
     const newAccessToken = jwt.sign(
-      { username: findUser.username },
+      { id: findUser._id.toString(), username: findUser.username },
       ACCESS_SECRET_KEY,
       { expiresIn: "30m" },
     );
     const newRefreshToken = jwt.sign(
-      { username: findUser.username },
+      { id: findUser._id.toString(), username: findUser.username },
       REFRESH_SECRET_KEY,
       { expiresIn: "30d" },
     );
